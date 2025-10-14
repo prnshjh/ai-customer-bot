@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 220 25% 97%;
+    --background: 215 28% 97%;
     --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
@@ -17,14 +17,15 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 198 93% 48%;
+    --primary: 198 93% 50%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 198 93% 70%;
+    --primary-glow: 198 93% 65%;
+    --primary-dark: 198 93% 42%;
 
-    --secondary: 220 17% 93%;
+    --secondary: 220 20% 95%;
     --secondary-foreground: 222 47% 11%;
 
-    --muted: 220 17% 93%;
+    --muted: 220 20% 95%;
     --muted-foreground: 215 16% 47%;
 
     --accent: 271 81% 56%;
@@ -33,29 +34,38 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 198 93% 48%;
+    --border: 220 15% 88%;
+    --input: 220 15% 94%;
+    --ring: 198 93% 50%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* Chat-specific tokens */
-    --chat-user-bg: 198 93% 48%;
+    --chat-user-bg: 198 93% 50%;
     --chat-user-fg: 0 0% 100%;
-    --chat-bot-bg: 220 17% 96%;
+    --chat-bot-bg: 0 0% 100%;
     --chat-bot-fg: 222 47% 11%;
-    --chat-container-bg: 0 0% 100%;
+    --chat-container-bg: 215 28% 97%;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(198 93% 48%), hsl(271 81% 56%));
-    --gradient-bot: linear-gradient(135deg, hsl(220 17% 96%), hsl(220 17% 98%));
+    --gradient-primary: linear-gradient(135deg, hsl(198 93% 50%) 0%, hsl(271 81% 56%) 100%);
+    --gradient-header: linear-gradient(135deg, hsl(198 93% 50%) 0%, hsl(198 93% 42%) 100%);
+    --gradient-bot: linear-gradient(135deg, hsl(0 0% 100%), hsl(220 20% 98%));
+    
+    /* Glass effects */
+    --glass-bg: hsla(0, 0%, 100%, 0.8);
+    --glass-border: hsla(220, 15%, 88%, 0.3);
     
     /* Shadows */
-    --shadow-message: 0 2px 8px hsl(198 93% 48% / 0.1);
-    --shadow-glow: 0 0 20px hsl(198 93% 70% / 0.3);
+    --shadow-sm: 0 1px 2px hsl(198 93% 50% / 0.06);
+    --shadow-md: 0 4px 12px hsl(198 93% 50% / 0.12);
+    --shadow-lg: 0 8px 24px hsl(198 93% 50% / 0.15);
+    --shadow-glow: 0 0 32px hsl(198 93% 65% / 0.4);
+    --shadow-input: 0 2px 8px hsl(220 15% 88% / 0.2);
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -77,9 +87,10 @@ All colors MUST be HSL.
     --popover: 222 47% 13%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 198 93% 48%;
+    --primary: 198 93% 50%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 198 93% 70%;
+    --primary-glow: 198 93% 65%;
+    --primary-dark: 198 93% 42%;
 
     --secondary: 217 33% 18%;
     --secondary-foreground: 210 40% 98%;
@@ -93,22 +104,29 @@ All colors MUST be HSL.
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
     --ring: 198 93% 60%;
 
     /* Chat-specific tokens for dark mode */
-    --chat-user-bg: 198 93% 48%;
+    --chat-user-bg: 198 93% 50%;
     --chat-user-fg: 0 0% 100%;
-    --chat-bot-bg: 217 33% 20%;
+    --chat-bot-bg: 217 33% 16%;
     --chat-bot-fg: 210 40% 98%;
-    --chat-container-bg: 222 47% 13%;
+    --chat-container-bg: 222 47% 11%;
     
-    --gradient-primary: linear-gradient(135deg, hsl(198 93% 48%), hsl(271 81% 56%));
-    --gradient-bot: linear-gradient(135deg, hsl(217 33% 20%), hsl(217 33% 22%));
+    --gradient-primary: linear-gradient(135deg, hsl(198 93% 50%) 0%, hsl(271 81% 56%) 100%);
+    --gradient-header: linear-gradient(135deg, hsl(198 93% 45%) 0%, hsl(198 93% 38%) 100%);
+    --gradient-bot: linear-gradient(135deg, hsl(217 33% 16%), hsl(217 33% 18%));
     
-    --shadow-message: 0 2px 8px hsl(0 0% 0% / 0.3);
-    --shadow-glow: 0 0 20px hsl(198 93% 70% / 0.2);
+    --glass-bg: hsla(217, 33%, 16%, 0.8);
+    --glass-border: hsla(217, 33%, 20%, 0.3);
+    
+    --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.15);
+    --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.25);
+    --shadow-lg: 0 8px 24px hsl(0 0% 0% / 0.35);
+    --shadow-glow: 0 0 32px hsl(198 93% 65% / 0.3);
+    --shadow-input: 0 2px 8px hsl(0 0% 0% / 0.3);
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -127,6 +145,10 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
   }
 }

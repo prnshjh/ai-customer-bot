@@ -181,21 +181,26 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className="flex flex-col h-screen bg-gradient-to-br from-background via-background to-secondary/20">
       {/* Header */}
-      <header className="bg-gradient-primary text-white p-4 shadow-glow">
-        <div className="container mx-auto flex items-center gap-3">
-          <MessageSquare className="w-6 h-6" />
-          <div>
-            <h1 className="text-xl font-bold">AI Customer Support</h1>
-            <p className="text-sm opacity-90">Powered by Gemini</p>
+      <header className="bg-gradient-header text-white shadow-lg relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-20"></div>
+        <div className="container mx-auto px-6 py-5 relative">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg">
+              <MessageSquare className="w-6 h-6" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight">AI Customer Support</h1>
+              <p className="text-sm text-white/90 font-medium mt-0.5">Powered by Gemini AI • Available 24/7</p>
+            </div>
           </div>
         </div>
       </header>
 
       {/* Chat Container */}
-      <div className="flex-1 overflow-y-auto bg-chat-container">
-        <div className="container mx-auto max-w-4xl py-4">
+      <div className="flex-1 overflow-y-auto">
+        <div className="container mx-auto max-w-4xl py-6 px-4">
           {messages.map((message) => (
             <ChatMessage
               key={message.id}

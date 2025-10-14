@@ -12,26 +12,26 @@ export const ChatMessage = ({ role, content, timestamp }: ChatMessageProps) => {
 
   return (
     <div className={cn(
-      "flex gap-3 p-4 animate-fade-in",
+      "flex gap-3 px-4 py-3 animate-slide-up",
       isBot ? "justify-start" : "justify-end"
     )}>
       {isBot && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center shadow-glow">
+        <div className="flex-shrink-0 w-10 h-10 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-md animate-scale-in">
           <Bot className="w-5 h-5 text-white" />
         </div>
       )}
       
       <div className={cn(
-        "max-w-[70%] rounded-2xl px-4 py-3 shadow-message transition-smooth",
+        "group max-w-[75%] rounded-3xl px-5 py-3.5 transition-smooth hover:scale-[1.02]",
         isBot 
-          ? "bg-chat-bot-bg text-chat-bot-fg rounded-tl-none" 
-          : "bg-chat-user-bg text-chat-user-fg rounded-tr-none"
+          ? "bg-chat-bot-bg text-chat-bot-fg rounded-tl-md shadow-md border border-border/50" 
+          : "bg-gradient-primary text-white rounded-tr-md shadow-lg"
       )}>
-        <p className="text-sm leading-relaxed whitespace-pre-wrap">{content}</p>
+        <p className="text-[0.9375rem] leading-relaxed whitespace-pre-wrap">{content}</p>
         {timestamp && (
           <span className={cn(
-            "text-xs mt-1 block opacity-70",
-            isBot ? "text-chat-bot-fg" : "text-chat-user-fg"
+            "text-xs mt-1.5 block opacity-60 group-hover:opacity-80 transition-smooth",
+            isBot ? "text-muted-foreground" : "text-white"
           )}>
             {timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
@@ -39,7 +39,7 @@ export const ChatMessage = ({ role, content, timestamp }: ChatMessageProps) => {
       </div>
 
       {!isBot && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+        <div className="flex-shrink-0 w-10 h-10 rounded-2xl bg-primary/10 backdrop-blur-sm flex items-center justify-center border border-primary/20 animate-scale-in">
           <User className="w-5 h-5 text-primary" />
         </div>
       )}
