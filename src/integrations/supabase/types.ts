@@ -14,7 +14,109 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      escalations: {
+        Row: {
+          created_at: string | null
+          id: string
+          resolved: boolean | null
+          session_id: string | null
+          user_message: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          resolved?: boolean | null
+          session_id?: string | null
+          user_message: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          resolved?: boolean | null
+          session_id?: string | null
+          user_message?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "escalations_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      faqs: {
+        Row: {
+          answer: string
+          created_at: string | null
+          id: string
+          question: string
+        }
+        Insert: {
+          answer: string
+          created_at?: string | null
+          id?: string
+          question: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string | null
+          id?: string
+          question?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          sender: string | null
+          session_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          sender?: string | null
+          session_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          sender?: string | null
+          session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sessions: {
+        Row: {
+          id: string
+          started_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          started_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          started_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
