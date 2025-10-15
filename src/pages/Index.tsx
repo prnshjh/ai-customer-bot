@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Moon, Sun, Plus } from "lucide-react";
+import { useTheme } from "next-themes";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { TypingIndicator } from "@/components/TypingIndicator";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -20,10 +22,47 @@ const Index = () => {
   const [showEscalation, setShowEscalation] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { theme, setTheme } = useTheme();
 
-  // Initialize session on mount
+  // Initialize or load last session
   useEffect(() => {
     const initSession = async () => {
+      // Check for existing session in localStorage
+      const savedSessionId = localStorage.getItem("chat_session_id");
+      
+      if (savedSessionId) {
+        // Try to load existing session
+        const { data: existingSession } = await supabase
+          .from("sessions")
+          .select("id")
+          .eq("id", savedSessionId)
+          .single();
+
+        if (existingSession) {
+          setSessionId(existingSession.id);
+          
+          // Load existing messages
+          const { data: existingMessages } = await supabase
+            .from("messages")
+            .select("*")
+            .eq("session_id", existingSession.id)
+            .order("created_at", { ascending: true });
+
+          if (existingMessages && existingMessages.length > 0) {
+            setMessages(
+              existingMessages.map((msg) => ({
+                id: msg.id,
+                role: msg.sender as "user" | "bot",
+                content: msg.content,
+                timestamp: new Date(msg.created_at),
+              }))
+            );
+            return;
+          }
+        }
+      }
+
+      // Create new session if none exists or load failed
       const { data, error } = await supabase
         .from("sessions")
         .insert({})
@@ -41,35 +80,16 @@ const Index = () => {
       }
 
       setSessionId(data.id);
+      localStorage.setItem("chat_session_id", data.id);
 
-      // Load existing messages
-      const { data: existingMessages } = await supabase
-        .from("messages")
-        .select("*")
-        .eq("session_id", data.id)
-        .order("created_at", { ascending: true });
-
-      if (existingMessages) {
-        setMessages(
-          existingMessages.map((msg) => ({
-            id: msg.id,
-            role: msg.sender as "user" | "bot",
-            content: msg.content,
-            timestamp: new Date(msg.created_at),
-          }))
-        );
-      }
-
-      // Add welcome message
-      if (!existingMessages || existingMessages.length === 0) {
-        const welcomeMsg: Message = {
-          id: "welcome",
-          role: "bot",
-          content: "Hello! 👋 I'm your AI support assistant. How can I help you today?",
-          timestamp: new Date(),
-        };
-        setMessages([welcomeMsg]);
-      }
+      // Add welcome message for new sessions
+      const welcomeMsg: Message = {
+        id: "welcome",
+        role: "bot",
+        content: "Hello! 👋 I'm your AI support assistant. How can I help you today?",
+        timestamp: new Date(),
+      };
+      setMessages([welcomeMsg]);
     };
 
     initSession();
@@ -144,6 +164,36 @@ const Index = () => {
     }
   };
 
+  const handleNewChat = async () => {
+    // Create new session
+    const { data, error } = await supabase
+      .from("sessions")
+      .insert({})
+      .select()
+      .single();
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to start new chat",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSessionId(data.id);
+    localStorage.setItem("chat_session_id", data.id);
+    setShowEscalation(false);
+
+    const welcomeMsg: Message = {
+      id: "welcome",
+      role: "bot",
+      content: "Hello! 👋 I'm your AI support assistant. How can I help you today?",
+      timestamp: new Date(),
+    };
+    setMessages([welcomeMsg]);
+  };
+
   const handleEscalate = async () => {
     if (!sessionId || messages.length === 0) return;
 
@@ -183,16 +233,36 @@ const Index = () => {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-background via-background to-secondary/20">
       {/* Header */}
-      <header className="bg-gradient-header text-white shadow-lg relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-20"></div>
+      <header className="bg-gradient-header text-primary-foreground shadow-lg relative overflow-hidden border-b border-border/50">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-foreground/5 to-transparent"></div>
         <div className="container mx-auto px-6 py-5 relative">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg">
-              <MessageSquare className="w-6 h-6" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-primary-foreground/20 backdrop-blur-sm flex items-center justify-center shadow-lg">
+                <MessageSquare className="w-6 h-6" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight">AI Customer Support</h1>
+                <p className="text-sm text-primary-foreground/90 font-medium mt-0.5">Powered by Gemini AI • Available 24/7</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">AI Customer Support</h1>
-              <p className="text-sm text-white/90 font-medium mt-0.5">Powered by Gemini AI • Available 24/7</p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleNewChat}
+                className="h-10 w-10 rounded-xl text-primary-foreground hover:bg-primary-foreground/20"
+              >
+                <Plus className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="h-10 w-10 rounded-xl text-primary-foreground hover:bg-primary-foreground/20"
+              >
+                {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </Button>
             </div>
           </div>
         </div>

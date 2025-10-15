@@ -17,7 +17,7 @@ export const ChatMessage = ({ role, content, timestamp }: ChatMessageProps) => {
     )}>
       {isBot && (
         <div className="flex-shrink-0 w-10 h-10 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-md animate-scale-in">
-          <Bot className="w-5 h-5 text-white" />
+          <Bot className="w-5 h-5 text-primary-foreground" />
         </div>
       )}
       
@@ -25,13 +25,13 @@ export const ChatMessage = ({ role, content, timestamp }: ChatMessageProps) => {
         "group max-w-[75%] rounded-3xl px-5 py-3.5 transition-smooth hover:scale-[1.02]",
         isBot 
           ? "bg-chat-bot-bg text-chat-bot-fg rounded-tl-md shadow-md border border-border/50" 
-          : "bg-gradient-primary text-white rounded-tr-md shadow-lg"
+          : "bg-gradient-primary text-primary-foreground rounded-tr-md shadow-lg"
       )}>
         <p className="text-[0.9375rem] leading-relaxed whitespace-pre-wrap">{content}</p>
         {timestamp && (
           <span className={cn(
             "text-xs mt-1.5 block opacity-60 group-hover:opacity-80 transition-smooth",
-            isBot ? "text-muted-foreground" : "text-white"
+            isBot ? "text-muted-foreground" : "text-primary-foreground/80"
           )}>
             {timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
