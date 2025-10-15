@@ -1,6 +1,6 @@
 # 🤖 AI Customer Support Bot
 
-An AI-powered customer support assistant leveraging **Supabase** for session management and storage, and **Gemini (Google Generative AI)** for intelligent query handling and conversation understanding.  
+An AI-powered customer support assistant leveraging **Supabase** for session management and storage, and **Gemini (Google Generative AI)** for intelligent query handling and conversation understanding[...]
 Simulates realistic customer support with **FAQ-based responses**, **contextual memory**, and **escalation scenarios**.
 
 ---
@@ -28,14 +28,14 @@ Simulates realistic customer support with **FAQ-based responses**, **contextual 
 
 ## 🏗️ Tech Stack
 
-| Layer        | Technology                                 |
-| ------------ | ------------------------------------------ |
-| Frontend     | React + TailwindCSS + TypeScript *(opt)*   |
-| Backend      | Node.js + Express                          |
-| Database     | Supabase (PostgreSQL)                      |
-| AI Model     | Gemini API (Google Generative AI)          |
-| Auth         | Supabase Auth                              |
-| Deployment   | Vercel / Render / Hugging Face Spaces      |
+| Layer      | Technology                                |
+| ---------- | ----------------------------------------- |
+| **Frontend**   | React, TailwindCSS, TypeScript *(optional)* |
+| **Backend**    | Node.js, Express                       |
+| **Database**   | Supabase (PostgreSQL)                  |
+| **AI Model**   | Gemini API (Google Generative AI)      |
+| **Auth**       | Supabase Auth                          |
+| **Deployment** | Vercel, Render, Hugging Face Spaces    |
 
 ---
 
@@ -73,12 +73,12 @@ ai-customer-support-bot/
 
 ## 🧩 Database Schema (Supabase)
 
-| Table        | Description                                  |
-| ------------ | -------------------------------------------- |
-| sessions     | Tracks each chat session with timestamps      |
-| messages     | Stores user & bot messages with roles         |
-| faqs         | Stores predefined FAQ dataset                 |
-| escalations  | Logs escalated queries for manual review      |
+| Table        | Purpose                                     |
+| ------------ | ------------------------------------------- |
+| **sessions**     | Tracks each chat session with timestamps      |
+| **messages**     | Stores user & bot messages with roles         |
+| **faqs**         | Stores predefined FAQ dataset                 |
+| **escalations**  | Logs escalated queries for manual review      |
 
 <details>
 <summary>Example Supabase Schema (SQL)</summary>
@@ -131,11 +131,11 @@ npm run dev
 
 ## 🛠️ API Endpoints
 
-| Endpoint         | Method | Description                    |
-| ---------------- | ------ | ------------------------------ |
-| `/api/chat`      | POST   | Send a query, get AI response  |
-| `/api/faq`       | GET    | Retrieve FAQ dataset           |
-| `/api/escalate`  | POST   | Log an escalation request      |
+| Endpoint         | Method | Description                        |
+| ---------------- | ------ | ---------------------------------- |
+| `/api/chat`      | POST   | Send a query, get AI response      |
+| `/api/faq`       | GET    | Retrieve FAQ dataset               |
+| `/api/escalate`  | POST   | Log an escalation request          |
 
 #### Example Request/Response
 
@@ -172,5 +172,19 @@ npm run dev
   *"Let me connect you to support."*
 - The query is logged in the `escalations` table.
 - Admins can later review and mark escalations as resolved.
+
+---
+
+## 💬 Example Prompts & Responses
+
+Basic examples of user prompts and AI bot responses:
+
+| User Prompt                          | Bot Response                                                                 |
+| ------------------------------------- | ---------------------------------------------------------------------------- |
+| How can I reset my password?          | To reset your password, go to Account Settings and click 'Reset'.            |
+| Do you ship internationally?          | Yes, we offer international shipping to most countries.                      |
+| Where is my order?                    | Please provide your order ID, and I'll check the status for you.             |
+| I want to return a product.           | To return a product, please visit the Returns section under My Orders.        |
+| I have an issue not listed here.      | Let me connect you to support.                                               |
 
 ---
