@@ -1,73 +1,159 @@
-# Welcome to your Lovable project
+# 🤖 AI Customer Support Bot
 
-## Project info
+An AI-powered customer support assistant built using **Supabase** for session management and database, and **Gemini (Google Generative AI)** for intelligent query handling and conversation understanding.  
+This project simulates real-world customer support interactions, complete with **FAQ-based responses**, **contextual memory**, and **escalation scenarios**.
 
-**URL**: https://lovable.dev/projects/d5b54c97-31f8-4709-b0c0-5dba25f00ece
+---
 
-## How can I edit this code?
+## 🚀 Overview
 
-There are several ways of editing your application.
+The **AI Customer Support Bot** is designed to:
+- Handle **customer queries** using natural language understanding.
+- Maintain **conversation context** through Supabase session tracking.
+- Simulate **escalation workflows** when queries can’t be resolved by AI.
+- Optionally provide a **frontend chat interface** for real-time interactions.
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d5b54c97-31f8-4709-b0c0-5dba25f00ece) and start prompting.
+## 🧠 Features
 
-Changes made via Lovable will be committed automatically to this repo.
+✅ AI-powered FAQ-based responses using **Gemini LLM**  
+✅ Contextual memory for each user session  
+✅ Escalation mechanism for unresolved queries  
+✅ RESTful backend with modular APIs  
+✅ Supabase integration for session & message tracking  
+✅ Optional React-based chat UI  
+✅ Ready-to-deploy architecture (Vercel / Render / Hugging Face)
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🏗️ Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+| Layer | Technology |
+|-------|-------------|
+| **Frontend** | React + TailwindCSS + TypeScript *(optional)* |
+| **Backend** | Node.js + Express |
+| **Database** | Supabase (PostgreSQL) |
+| **AI Model** | Gemini API (Google Generative AI) |
+| **Auth** | Supabase Auth |
+| **Deployment** | Vercel / Render / Hugging Face Spaces |
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🗂️ Project Structure
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+ai-customer-support-bot/
+│
+├── backend/
+│ ├── server.js # Express entry point
+│ ├── routes/
+│ │ ├── chat.js # /api/chat – Handles queries
+│ │ ├── faq.js # /api/faq – FAQ management
+│ │ └── escalate.js # /api/escalate – Escalation logging
+│ ├── services/
+│ │ ├── geminiClient.js # Handles Gemini API calls
+│ │ └── supabaseClient.js # Database operations
+│ └── utils/
+│ └── conversationMemory.js # Context handling
+│
+├── frontend/ # (optional)
+│ ├── src/
+│ │ ├── components/ChatUI.tsx
+│ │ ├── pages/Home.tsx
+│ │ └── utils/api.ts
+│ └── package.json
+│
+├── .env.example
+├── README.md
+├── package.json
+└── LICENSE
 
-# Step 3: Install the necessary dependencies.
-npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+---
+
+## 🧩 Database Schema (Supabase)
+
+| Table | Description |
+|--------|-------------|
+| **sessions** | Tracks each chat session with timestamps |
+| **messages** | Stores user & bot messages with roles |
+| **faqs** | Stores predefined FAQ dataset |
+| **escalations** | Logs escalated queries for manual review |
+
+```sql
+-- Example Supabase Schema
+CREATE TABLE sessions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id TEXT,
+  created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id UUID REFERENCES sessions(id),
+  role TEXT CHECK (role IN ('user', 'assistant')),
+  content TEXT,
+  created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE faqs (
+  id SERIAL PRIMARY KEY,
+  question TEXT,
+  answer TEXT,
+  category TEXT,
+  created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE escalations (
+  id SERIAL PRIMARY KEY,
+  session_id UUID REFERENCES sessions(id),
+  reason TEXT,
+  resolved BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT now()
+);
+
+git clone https://github.com/rimjhimjha/ai-customer-bot.git
+cd ai-customer-bot
+npm install
 npm run dev
-```
 
-**Edit a file directly in GitHub**
+| Endpoint        | Method | Description                   |
+| --------------- | ------ | ----------------------------- |
+| `/api/chat`     | `POST` | Send a query, get AI response |
+| `/api/faq`      | `GET`  | Retrieve FAQ dataset          |
+| `/api/escalate` | `POST` | Log an escalation request     |
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
 
-**Use GitHub Codespaces**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
+Example Request:
+POST /api/chat
+{
+  "session_id": "uuid-of-session",
+  "message": "How can I return a product?"
+}
 
-This project is built with:
+Example Response
+{
+  "reply": "To return a product, please visit the Returns section under My Orders.",
+  "escalated": false
+}
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
 
-## How can I deploy this project?
+🧠 Gemini Integration
 
-Simply open [Lovable](https://lovable.dev/projects/d5b54c97-31f8-4709-b0c0-5dba25f00ece) and click on Share -> Publish.
+Uses Gemini API for natural conversation and contextual reasoning.
 
-## Can I connect a custom domain to my Lovable project?
+Pulls last few conversation messages from Supabase for continuity.
 
-Yes, you can!
+Uses FAQ data to guide Gemini responses.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+If Gemini’s confidence is low, the query is escalated automatically.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+🔄 Escalation Flow
+
+If Gemini responds with uncertainty → bot replies "Let me connect you to support."
+
+The query is logged in escalations table.
+
+Admins can later review and mark it as resolved.
